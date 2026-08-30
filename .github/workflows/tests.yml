@@ -1,0 +1,29 @@
+name: Perl-Tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Unit-Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Testabhängigkeiten installieren
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libtest2-suite-perl
+
+      - name: Tests ausführen
+        run: prove -lr tests
